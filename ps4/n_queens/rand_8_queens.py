@@ -46,7 +46,6 @@ for x in range(1):
         # If a solution is found, break loop
         # print(fitness(queens, N))
         if fitness(queens, N) == N*(N-1)/2:
-            # print_grid(queens, N) # Print grid
             print(queens)
             success = True
     print('{}): {}'.format(x,count))

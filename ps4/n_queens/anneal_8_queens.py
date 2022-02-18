@@ -5,8 +5,12 @@ from math import exp, inf
 import numpy as np
 import random
 
+f = 0 # number of evaluations
+
 # Return the number of queens conflicting in grid.
 def fitness(queens, N):
+    global f
+    f += 1
     c = 0
     for q in range(len(queens)):
         for q_y in range(len(queens)):
@@ -32,7 +36,7 @@ def print_grid(queens, N):
 def schedule(T):
     a = 0.998 # hyperparameter a
     # calculate temperature for current epoch
-    return 0.75*(pow(T,-0.5)-0.025)
+    # return 0.75*(pow(T,-0.5)-0.025)
     return a*T
 
 def rand_successor(queens, N):
@@ -58,11 +62,11 @@ for i in range(100):
     for n in range(N):
         queens.append(random.randint(0,N-1))
 
-    T = 100 # Temperature
+    T = 30 # Temperature
     t = 1  # Epoch
     while True:
         T = schedule(T)
-        if T == 0:
+        if T <= 0:
             reset = True
             print('T == 0. No more annealing to be done')
             print('There are {} conflicts.'.format((N*(N-1)/2) - fitness(queens,N)))
@@ -87,7 +91,6 @@ for i in range(100):
 
         # Break loop if solution has been found
         if fitness(queens,N) == N*(N-1)/2:
-            # print_grid(queens, N)
             print('SUCCESS in {} iterations.'.format(t))
             print(queens)
             break
@@ -95,4 +98,5 @@ for i in range(100):
         t += 1 # Iterate epoch
     count += t
     print(count)
-print('final: {}/100 = {}'.format(count, count/100))
+print('final epoch: {}/100 = {}'.format(count, count/100))
+print('final evals: {}/100 = {}'.format(f, f/100))
